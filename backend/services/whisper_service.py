@@ -3,7 +3,7 @@ from typing import Any
 import torch
 from backend.core import settings
 
-DEMO_MODE = True
+DEMO_MODE = False
 
 
 class WhisperService:

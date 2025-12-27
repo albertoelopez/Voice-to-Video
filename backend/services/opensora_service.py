@@ -4,7 +4,7 @@ import subprocess
 import torch
 from backend.core import settings
 
-DEMO_MODE = True
+DEMO_MODE = False
 
 
 class OpenSoraService:
@@ -172,7 +172,7 @@ class OpenSoraService:
         total_memory = torch.cuda.get_device_properties(device).total_memory
         total_memory_gb = total_memory / (1024**3)
 
-        min_required = 24 if settings.opensora_resolution == "256px" else 48
+        min_required = 20 if settings.opensora_resolution == "256px" else 40
 
         return {
             "available": total_memory_gb >= min_required,

@@ -2,7 +2,7 @@ from pathlib import Path
 import torch
 from backend.core import settings
 
-DEMO_MODE = True
+DEMO_MODE = False
 
 
 class ChatterboxService:
