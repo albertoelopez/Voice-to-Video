@@ -91,7 +91,10 @@ class ChatterboxService:
 
         wav = self.model.generate(text, **kwargs)
 
-        torchaudio.save(str(output_path), wav, self.sample_rate)
+        if wav.dtype != torch.float32:
+            wav = wav.float()
+
+        torchaudio.save(str(output_path), wav.cpu(), self.sample_rate)
         return output_path
 
     def list_builtin_voices(self) -> list[str]:
