@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     opensora_resolution: Literal["256px", "768px"] = "256px"
     opensora_num_frames: int = 129
     opensora_device: str = "cuda" if torch.cuda.is_available() else "cpu"
-    opensora_model_path: Path | None = None
+    opensora_model_path: Path = Path.home() / ".cache" / "voxvideo" / "Open-Sora-v2"
 
     max_audio_duration_seconds: int = 300
     max_video_duration_seconds: int = 10
