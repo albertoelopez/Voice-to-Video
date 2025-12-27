@@ -4,7 +4,7 @@ import subprocess
 import torch
 from backend.core import settings
 
-DEMO_MODE = False
+DEMO_MODE = True
 
 
 class OpenSoraService:
@@ -35,7 +35,7 @@ class OpenSoraService:
 
     def _get_config_path(self) -> str:
         resolution = settings.opensora_resolution
-        return f"configs/diffusion/inference/t2i2v_{resolution}.py"
+        return f"configs/diffusion/inference/{resolution}.py"
 
     def generate_video(
         self,
@@ -70,7 +70,7 @@ class OpenSoraService:
 
         config_path = self._get_config_path()
         if resolution != settings.opensora_resolution:
-            config_path = f"configs/diffusion/inference/t2i2v_{resolution}.py"
+            config_path = f"configs/diffusion/inference/{resolution}.py"
 
         cmd = [
             "torchrun",
@@ -147,9 +147,10 @@ class OpenSoraService:
             subprocess.run(cmd_simple, capture_output=True)
 
     def _get_opensora_path(self) -> Path:
-        if settings.opensora_model_path:
-            return settings.opensora_model_path
-        return settings.model_cache_dir / "Open-Sora"
+        return settings.opensora_repo_path
+
+    def _get_model_path(self) -> Path:
+        return settings.opensora_model_path
 
     def check_gpu_requirements(self) -> dict[str, Any]:
         if DEMO_MODE:
@@ -172,7 +173,7 @@ class OpenSoraService:
         total_memory = torch.cuda.get_device_properties(device).total_memory
         total_memory_gb = total_memory / (1024**3)
 
-        min_required = 20 if settings.opensora_resolution == "256px" else 40
+        min_required = 40 if settings.opensora_resolution == "256px" else 80
 
         return {
             "available": total_memory_gb >= min_required,
